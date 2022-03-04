@@ -27,7 +27,7 @@ export default function App() {
   }, []);
 
   const animatedProps = useAnimatedProps(() => ({
-    strokeDashoffset: CIRCLE_LENGTH * progress.value,
+    strokeDashoffset: CIRCLE_LENGTH * (1 - progress.value),
   }));
 
   return (
