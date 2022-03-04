@@ -25,6 +25,15 @@ export default function App() {
           stroke={BACKGROUND_STROCK_COLOR}
           strokeWidth={15}
         />
+        <Circle
+          cx={width / 2}
+          cy={height / 2}
+          r={R}
+          stroke={STROCK_COLOR}
+          strokeWidth={15}
+          strokeDasharray={CIRCLE_LENGTH / 2}
+          strokeDashoffset={CIRCLE_LENGTH * 0.5}
+        />
       </Svg>
     </View>
   );
