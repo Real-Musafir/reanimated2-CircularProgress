@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { Dimensions, StyleSheet, Text, View } from "react-native";
 import Animated, {
   useAnimatedProps,
@@ -9,6 +9,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { ReText } from "react-native-redash";
 import Svg, { Circle } from "react-native-svg";
+import { TouchableOpacity } from "react-native";
 
 const BACKGROUND_COLOR = "#444B6F";
 const BACKGROUND_STROCK_COLOR = "#303858";
@@ -24,10 +25,6 @@ const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 export default function App() {
   const progress = useSharedValue(0);
 
-  useEffect(() => {
-    progress.value = withTiming(1, { duration: 2000 });
-  }, []);
-
   const animatedProps = useAnimatedProps(() => ({
     strokeDashoffset: CIRCLE_LENGTH * (1 - progress.value),
   }));
@@ -35,6 +32,10 @@ export default function App() {
   const progressText = useDerivedValue(() => {
     return `${Math.floor(progress.value * 100)}`;
   });
+
+  const onPress = useCallback(() => {
+    progress.value = withTiming(progress.value > 0 ? 0 : 1, { duration: 2000 });
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -58,6 +59,9 @@ export default function App() {
           strokeLinecap={"round"}
         />
       </Svg>
+      <TouchableOpacity onPress={onPress} style={styles.button}>
+        <Text style={styles.buttonText}>Run</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -72,5 +76,22 @@ const styles = StyleSheet.create({
   progressText: {
     fontSize: 80,
     color: "rgba(256,256,256,0.7)",
+    width: 200,
+    textAlign: "center",
+  },
+  button: {
+    position: "absolute",
+    bottom: 80,
+    width: width * 0.7,
+    height: 60,
+    backgroundColor: BACKGROUND_STROCK_COLOR,
+    borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  buttonText: {
+    fontSize: 25,
+    color: "white",
+    letterSpacing: 2.0,
   },
 });
